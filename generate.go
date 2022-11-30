@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"encoding/xml"
 	"io/ioutil"
 	"log"
 	"os"
@@ -27,8 +29,23 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = tmpl.Execute(os.Stdout, config)
+	var outputBuffer bytes.Buffer
+	err = tmpl.Execute(&outputBuffer, config)
 	if err != nil {
 		panic(err)
 	}
+	outputFilename := "standalone.xml"
+	if !isValid(outputBuffer.String()) {
+		outputFilename += ".invalid"
+		log.Fatalf("invalid xml, saving to %s for inspection\n", outputFilename)
+	} else {
+		log.Printf("writing xml to %s\n", outputFilename)
+	}
+	if err := os.WriteFile(outputFilename, outputBuffer.Bytes(), 0644); err != nil {
+		log.Panicf("error writing to %s: %s", outputFilename, err)
+	}
+}
+
+func isValid(s string) bool {
+	return xml.Unmarshal([]byte(s), new(interface{})) == nil
 }
