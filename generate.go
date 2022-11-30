@@ -9,7 +9,12 @@ import (
 	"os"
 	"sort"
 	"text/template"
+
+	_ "embed"
 )
+
+//go:embed standalone.xml.template
+var configTemplateContents string
 
 type WildflyConfiguration struct {
 	ClientPort       *int              `json:"port_client"`
@@ -22,12 +27,12 @@ type WildflyConfiguration struct {
 }
 
 type DatabaseConfiguration struct {
-	Dialect  map[string]string `json:"dialect"`
-	Host     string            `json:"host"`
-	Name     string            `json:"database"`
-	Password string            `json:"password"`
-	Port     int               `json:"port"`
-	User     string            `json:"user"`
+	Dialect  *map[string]string `json:"dialect"`
+	Host     *string            `json:"host"`
+	Name     *string            `json:"database"`
+	Password *string            `json:"password"`
+	Port     *int               `json:"port"`
+	User     *string            `json:"user"`
 }
 
 type Configuration struct {
@@ -68,7 +73,7 @@ func main() {
 		log.Fatal("Error during Unmarshal(): ", err)
 	}
 
-	tmpl, err := template.New("standalone.xml.template").ParseFiles("standalone.xml.template")
+	tmpl, err := template.New("standalone.xml.template").Parse(configTemplateContents)
 	if err != nil {
 		panic(err)
 	}
@@ -96,10 +101,10 @@ func orDefault[V string | int](val *V, def V) V {
 }
 
 func getDatabaseDriver(config Configuration) (string, string) {
-	if len(config.Database.Dialect) != 1 {
-		log.Fatalf("expected exactly one database dialect in config, found %d", len(config.Database.Dialect))
+	if len(*config.Database.Dialect) != 1 {
+		log.Fatalf("expected exactly one database dialect in config, found %d", len(*config.Database.Dialect))
 	}
-	for key, value := range config.Database.Dialect {
+	for key, value := range *config.Database.Dialect {
 		if key == "Psql" {
 			if value != "postgresql" {
 				log.Fatalf("expected database dialect value to be postgresql, got %s\n", value)
@@ -138,15 +143,15 @@ func getTemplateParameters(config Configuration) TemplateParameters {
 	return TemplateParameters{
 		ClientPort:                orDefault(config.Wildfly.ClientPort, 8787),
 		DatabaseDriver:            databaseDriver,
-		DatabaseHost:              config.Database.Host,
+		DatabaseHost:              *config.Database.Host,
 		DatabaseInitialPoolSize:   maxPoolSize / 8,
 		DatabaseMaxPoolSize:       maxPoolSize,
 		DatabaseMinPoolSize:       maxPoolSize / 8,
-		DatabaseName:              config.Database.Name,
-		DatabasePassword:          config.Database.Password,
-		DatabasePort:              config.Database.Port,
+		DatabaseName:              *config.Database.Name,
+		DatabasePassword:          *config.Database.Password,
+		DatabasePort:              *config.Database.Port,
 		DatabaseStatisticsEnabled: config.Wildfly.Statistics,
-		DatabaseUser:              config.Database.User,
+		DatabaseUser:              *config.Database.User,
 		DBJNDIName:                orDefault(config.Wildfly.DBJNDIName, "jboss/datasources/axeDS"),
 		SystemProperties:          systemProperties,
 	}
