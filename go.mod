@@ -1,3 +1,3 @@
-module axetrading.com/go-standalone-xml-generator
+module github.com/axetrading/axetrader-standalone-xml-generator
 
 go 1.18

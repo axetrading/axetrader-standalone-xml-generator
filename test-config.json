@@ -1,0 +1,20 @@
+{
+  "database": {
+    "dialect": {
+      "Psql": "postgresql"
+    },
+    "host": "test-db-host",
+    "port": 1234,
+    "database": "test-database-name",
+    "user": "test-database-user",
+    "password": "test-database-password"
+  },
+  "wildfly": {
+    "metrics": true,
+    "statistics": true,
+    "systemproperties": {
+      "testprop1": "testvalue1",
+      "testprop2": "testvalue2"
+    }
+  }
+}

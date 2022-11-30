@@ -57,16 +57,9 @@ type TemplateParameters struct {
 }
 
 func main() {
-	args := os.Args[1:]
-	if len(args) != 2 {
-		log.Fatalln("Usage: generate config.json standalone.xml")
-	}
-	configFilename := args[0]
-	outputFilename := args[1]
-
-	content, err := ioutil.ReadFile(configFilename)
+	content, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
-		log.Fatal("Error when opening file: ", err)
+		log.Fatal("Error reading stdin: ", err)
 	}
 
 	config := Configuration{}
@@ -85,13 +78,12 @@ func main() {
 		panic(err)
 	}
 	if !isValid(outputBuffer.String()) {
-		outputFilename += ".invalid"
-		log.Fatalf("invalid xml, saving to %s for inspection\n", outputFilename)
+		log.Fatalf("error, invalid xml generated:\n\n%s", outputBuffer.String())
 	} else {
-		log.Printf("writing xml to %s\n", outputFilename)
+		log.Println("Successfully generated xml")
 	}
-	if err := os.WriteFile(outputFilename, outputBuffer.Bytes(), 0644); err != nil {
-		log.Panicf("error writing to %s: %s", outputFilename, err)
+	if n, err := os.Stdout.Write(outputBuffer.Bytes()); err != nil || n < outputBuffer.Len() {
+		log.Fatalf("error writing to stdout, %d bytes of %d written: %s", n, outputBuffer.Len(), err)
 	}
 }
 
