@@ -14,5 +14,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo $GITHUB_TOKEN | docker login ghcr.io -u axetrading --password-stdin
-        docker build . --tag ghcr.io/axetrading/go-standalone-xml-generator:latest
-        docker push ghcr.io/axetrading/go-standalone-xml-generator:latest
+        docker build . --tag ghcr.io/axetrading/axetrader-standalone-xml-generator:latest
+        docker push ghcr.io/axetrading/axetrader-standalone-xml-generator:latest
