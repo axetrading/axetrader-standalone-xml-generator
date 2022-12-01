@@ -27,12 +27,10 @@ type WildflyConfiguration struct {
 }
 
 type DatabaseConfiguration struct {
-	Dialect  *map[string]string `json:"dialect"`
-	Host     *string            `json:"host"`
-	Name     *string            `json:"database"`
-	Password *string            `json:"password"`
-	Port     *int               `json:"port"`
-	User     *string            `json:"user"`
+	Dialect *map[string]string `json:"dialect"`
+	Name    *string            `json:"database"`
+	Port    *int               `json:"port"`
+	User    *string            `json:"user"`
 }
 
 type Configuration struct {
@@ -48,12 +46,10 @@ type SystemProperty struct {
 type TemplateParameters struct {
 	ClientPort                int
 	DatabaseDriver            string
-	DatabaseHost              string
 	DatabaseInitialPoolSize   int
 	DatabaseMaxPoolSize       int
 	DatabaseMinPoolSize       int
 	DatabaseName              string
-	DatabasePassword          string
 	DatabasePort              int
 	DatabaseStatisticsEnabled bool
 	DatabaseUser              string
@@ -68,7 +64,11 @@ func main() {
 	}
 
 	config := Configuration{}
-	err = json.Unmarshal(content, &config)
+	decoder := json.NewDecoder(bytes.NewReader(content))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&config)
+
+	//err = json.Unmarshal(content, &config)
 	if err != nil {
 		log.Fatal("Error during Unmarshal(): ", err)
 	}
@@ -100,7 +100,10 @@ func orDefault[V string | int](val *V, def V) V {
 	}
 }
 
-func getDatabaseDriver(config Configuration) (string, string) {
+func getDatabaseDriver(config Configuration) (string, string, int) {
+	if config.Database.Dialect == nil {
+		return "postgresql", "org.hibernate.dialect.PostgreSQL95Dialect", 5432
+	}
 	if len(*config.Database.Dialect) != 1 {
 		log.Fatalf("expected exactly one database dialect in config, found %d", len(*config.Database.Dialect))
 	}
@@ -109,12 +112,12 @@ func getDatabaseDriver(config Configuration) (string, string) {
 			if value != "postgresql" {
 				log.Fatalf("expected database dialect value to be postgresql, got %s\n", value)
 			}
-			return value, "org.hibernate.dialect.PostgreSQL95Dialect"
+			return value, "org.hibernate.dialect.PostgreSQL95Dialect", 5432
 		} else if key == "Mssql" {
 			if value != "mssqlserver" {
 				log.Fatalf("expected database dialect value to be mssqlserver, got %s\n", value)
 			}
-			return value, "org.hibernate.dialect.SQLServer2008Dialect"
+			return value, "org.hibernate.dialect.SQLServer2008Dialect", 1433
 		} else {
 			log.Fatalf("expected Psql or Mssql database dialect, got %s\n", key)
 		}
@@ -123,7 +126,7 @@ func getDatabaseDriver(config Configuration) (string, string) {
 }
 
 func getTemplateParameters(config Configuration) TemplateParameters {
-	databaseDriver, hibernateDialect := getDatabaseDriver(config)
+	databaseDriver, hibernateDialect, defaultDatabasePort := getDatabaseDriver(config)
 	systemProperties := []SystemProperty{
 		{Name: "hibernate.dialect", Value: hibernateDialect},
 	}
@@ -143,15 +146,13 @@ func getTemplateParameters(config Configuration) TemplateParameters {
 	return TemplateParameters{
 		ClientPort:                orDefault(config.Wildfly.ClientPort, 8787),
 		DatabaseDriver:            databaseDriver,
-		DatabaseHost:              *config.Database.Host,
 		DatabaseInitialPoolSize:   maxPoolSize / 8,
 		DatabaseMaxPoolSize:       maxPoolSize,
 		DatabaseMinPoolSize:       maxPoolSize / 8,
-		DatabaseName:              *config.Database.Name,
-		DatabasePassword:          *config.Database.Password,
-		DatabasePort:              *config.Database.Port,
+		DatabaseName:              orDefault(config.Database.Name, "axetrader"),
+		DatabasePort:              orDefault(config.Database.Port, defaultDatabasePort),
 		DatabaseStatisticsEnabled: config.Wildfly.Statistics,
-		DatabaseUser:              *config.Database.User,
+		DatabaseUser:              orDefault(config.Database.User, "axetrader"),
 		DBJNDIName:                orDefault(config.Wildfly.DBJNDIName, "jboss/datasources/axeDS"),
 		SystemProperties:          systemProperties,
 	}
