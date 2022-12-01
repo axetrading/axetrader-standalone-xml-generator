@@ -37,7 +37,7 @@ In a couple of cases (e.g. database hostname and password) we have dropped suppo
 
 ## Config structure
 
-### `database"
+### `database`
 
 This top level key contains details for connecting to the database. It includes the following fields:
 

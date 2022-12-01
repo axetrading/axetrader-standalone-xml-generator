@@ -9,7 +9,7 @@ COPY . .
 RUN go build -v -o generate ./...
 
 
-FROM aline:latest AS test
+FROM alpine:latest AS test
 
 COPY --from=builder /build/generate ./
 COPY test-standalone-expected.xml ./
