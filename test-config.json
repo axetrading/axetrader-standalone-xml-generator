@@ -3,11 +3,9 @@
     "dialect": {
       "Psql": "postgresql"
     },
-    "host": "test-db-host",
     "port": 1234,
     "database": "test-database-name",
-    "user": "test-database-user",
-    "password": "test-database-password"
+    "user": "test-database-user"
   },
   "wildfly": {
     "metrics": true,
