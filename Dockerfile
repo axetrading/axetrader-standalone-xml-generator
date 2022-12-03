@@ -19,7 +19,7 @@ RUN ./generate < test-config.json > test-standalone.xml && \
     diff -u test-standalone-expected.xml test-standalone.xml
 
 
-FROM scratch AS final
+FROM alpine:latest AS final
 
 COPY --from=builder /build/generate /generate
 
