@@ -33,7 +33,10 @@ axetrader-standalone-xml-generator < config.json > standalone.xml
 
 This tool provides an opinionated interface to the config. Any values in the incoming JSON that it doesn't recognise will cause the tool to fail fast. The only options that are supported are those that are directly reflected in the standalone.xml - this tool has one responsibility and one only: generate standalone.xml.
 
-In a couple of cases (e.g. database hostname and password) we have dropped support for configuration - this tool is designed to run at the start of the pipeline to generate the common config shared across environments. For valuse like these that need to be different between different environments we reference system properties to allow these values to be injected in.
+In a couple of cases (e.g. database hostname and password) we have dropped support for configuration - this tool is designed to run at the start of the pipeline to generate the common config shared across environments. The following placeholders are set for these values, expected to be replaced at runtime before starting Wildfly:
+
+* `DATABASE_HOST_PLACEHOLDER`
+* `DATABASE_PASSWORD_PLACEHOLDER`
 
 ## Config structure
 

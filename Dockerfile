@@ -11,7 +11,9 @@ RUN go build -v -o generate ./...
 
 FROM alpine:latest AS test
 
-COPY --from=builder /build/generate ./
+WORKDIR /build
+
+COPY --from=builder /build/generate generate
 COPY test-standalone-expected.xml ./
 COPY test-config.json ./
 
@@ -21,6 +23,6 @@ RUN ./generate < test-config.json > test-standalone.xml && \
 
 FROM alpine:latest AS final
 
-COPY --from=builder /build/generate /generate
+COPY --from=test /build/generate /generate
 
 ENTRYPOINT ["/generate"]

@@ -163,7 +163,7 @@
                     </driver>
                 </drivers>
                 <datasource jndi-name="java:{{ .DBJNDIName | html }}" pool-name="" enabled="true" statistics-enabled="{{ .DatabaseStatisticsEnabled | printf "%t" | html }}" xmlns="urn:jboss:domain:datasources:6.0">
-					<connection-url xmlns="urn:jboss:domain:datasources:6.0">jdbc:{{ .DatabaseDriver | html }}://${system.property.databaseHost}:{{ .DatabasePort }}/{{ .DatabaseName }}</connection-url>
+					<connection-url xmlns="urn:jboss:domain:datasources:6.0">jdbc:{{ .DatabaseDriver | html }}://DATABASE_HOST_PLACEHOLDER:{{ .DatabasePort }}/{{ .DatabaseName }}</connection-url>
 					<driver xmlns="urn:jboss:domain:datasources:6.0">{{ .DatabaseDriver | html }}</driver>
 					<transaction-isolation xmlns="urn:jboss:domain:datasources:6.0">TRANSACTION_READ_UNCOMMITTED</transaction-isolation>
 					<pool xmlns="urn:jboss:domain:datasources:6.0">
@@ -173,7 +173,7 @@
 					</pool>
 					<security xmlns="urn:jboss:domain:datasources:6.0">
 						<user-name xmlns="urn:jboss:domain:datasources:6.0">{{ .DatabaseUser | html }}</user-name>
-						<password xmlns="urn:jboss:domain:datasources:6.0">${system.property.databasePassword}</password>
+						<password xmlns="urn:jboss:domain:datasources:6.0">DATABASE_PASSWORD_PLACEHOLDER</password>
 					</security>
 					<timeout xmlns="urn:jboss:domain:datasources:6.0">
 						<idle-timeout-minutes xmlns="urn:jboss:domain:datasources:6.0">5</idle-timeout-minutes>
