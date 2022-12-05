@@ -27,7 +27,7 @@
         <extension module="org.wildfly.extension.undertow"/>
     </extensions>
     <system-properties>
-        <property name="clientport" value="8787" xmlns="urn:jboss:domain:19.0"></property>
+        <property name="clientport" value="8899" xmlns="urn:jboss:domain:19.0"></property>
     	<property name="hibernate.show_sql" value="false" xmlns="urn:jboss:domain:19.0"></property>
     	<property name="hibernate.hbm2ddl.auto" value="validate" xmlns="urn:jboss:domain:19.0"></property>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect" xmlns="urn:jboss:domain:19.0"></property>

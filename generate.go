@@ -141,7 +141,7 @@ func getTemplateParameters(config Configuration) TemplateParameters {
 	// https://github.com/axetrading/axetrader-installer/blob/35b8e054ce2dc855edaa9ae7d4ea72d8f4b5cf90/src/install/wildfly.rs#L914-L965
 
 	return TemplateParameters{
-		ClientPort:                orDefault(config.Wildfly.ClientPort, 8787),
+		ClientPort:                orDefault(config.Wildfly.ClientPort, 8899),
 		DatabaseDriver:            databaseDriver,
 		DatabaseInitialPoolSize:   maxPoolSize / 8,
 		DatabaseMaxPoolSize:       maxPoolSize,
