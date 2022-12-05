@@ -51,7 +51,6 @@ type TemplateParameters struct {
 	DatabaseName              string
 	DatabasePort              int
 	DatabaseStatisticsEnabled bool
-	DatabaseUser              string
 	DBJNDIName                string
 	SystemProperties          []SystemProperty
 }
@@ -151,7 +150,6 @@ func getTemplateParameters(config Configuration) TemplateParameters {
 		DatabaseName:              orDefault(config.Database.Name, "axetrader"),
 		DatabasePort:              orDefault(config.Database.Port, defaultDatabasePort),
 		DatabaseStatisticsEnabled: config.Wildfly.Statistics,
-		DatabaseUser:              orDefault(config.Database.User, "axetrader"),
 		DBJNDIName:                orDefault(config.Wildfly.DBJNDIName, "jboss/datasources/axeDS"),
 		SystemProperties:          systemProperties,
 	}

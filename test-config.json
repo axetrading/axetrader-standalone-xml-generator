@@ -4,8 +4,7 @@
       "Psql": "postgresql"
     },
     "port": 1234,
-    "database": "test-database-name",
-    "user": "test-database-user"
+    "database": "test-database-name"
   },
   "wildfly": {
     "metrics": true,
