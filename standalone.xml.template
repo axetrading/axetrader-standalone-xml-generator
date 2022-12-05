@@ -162,7 +162,7 @@
                         <xa-datasource-class>com.microsoft.sqlserver.jdbc.SQLServerXADataSource</xa-datasource-class>
                     </driver>
                 </drivers>
-                <datasource jndi-name="java:{{ .DBJNDIName | html }}" pool-name="" enabled="true" statistics-enabled="{{ .DatabaseStatisticsEnabled | printf "%t" | html }}" xmlns="urn:jboss:domain:datasources:6.0">
+                <datasource jndi-name="java:{{ .DBJNDIName | html }}" pool-name="AxeDS" enabled="true" statistics-enabled="{{ .DatabaseStatisticsEnabled | printf "%t" | html }}" xmlns="urn:jboss:domain:datasources:6.0">
 					<connection-url xmlns="urn:jboss:domain:datasources:6.0">jdbc:{{ .DatabaseDriver | html }}://DATABASE_HOSTNAME:{{ .DatabasePort }}/{{ .DatabaseName }}</connection-url>
 					<driver xmlns="urn:jboss:domain:datasources:6.0">{{ .DatabaseDriver | html }}</driver>
 					<transaction-isolation xmlns="urn:jboss:domain:datasources:6.0">TRANSACTION_READ_UNCOMMITTED</transaction-isolation>

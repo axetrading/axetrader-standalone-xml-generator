@@ -20,7 +20,6 @@ type WildflyConfiguration struct {
 	ClientPort       *int              `json:"port_client"`
 	DBJNDIName       *string           `json:"db_jndi_name"`
 	DBMaxPoolSize    *int              `json:"db_max_pool_size"`
-	DBPoolName       string            `json:"db_pool_name"`
 	Metrics          bool              `json:"metrics"`
 	Statistics       bool              `json:"statistics"`
 	SystemProperties map[string]string `json:"systemproperties"`
