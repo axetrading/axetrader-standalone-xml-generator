@@ -30,7 +30,6 @@ type DatabaseConfiguration struct {
 	Dialect *map[string]string `json:"dialect"`
 	Name    *string            `json:"database"`
 	Port    *int               `json:"port"`
-	User    *string            `json:"user"`
 }
 
 type Configuration struct {

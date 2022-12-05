@@ -163,7 +163,7 @@
                     </driver>
                 </drivers>
                 <datasource jndi-name="java:jboss/datasources/axeDS" pool-name="" enabled="true" statistics-enabled="true" xmlns="urn:jboss:domain:datasources:6.0">
-					<connection-url xmlns="urn:jboss:domain:datasources:6.0">jdbc:postgresql://DATABASE_HOST_PLACEHOLDER:1234/test-database-name</connection-url>
+					<connection-url xmlns="urn:jboss:domain:datasources:6.0">jdbc:postgresql://DATABASE_HOSTNAME:1234/test-database-name</connection-url>
 					<driver xmlns="urn:jboss:domain:datasources:6.0">postgresql</driver>
 					<transaction-isolation xmlns="urn:jboss:domain:datasources:6.0">TRANSACTION_READ_UNCOMMITTED</transaction-isolation>
 					<pool xmlns="urn:jboss:domain:datasources:6.0">
@@ -172,8 +172,8 @@
 						<initial-pool-size xmlns="urn:jboss:domain:datasources:6.0">4</initial-pool-size>
 					</pool>
 					<security xmlns="urn:jboss:domain:datasources:6.0">
-						<user-name xmlns="urn:jboss:domain:datasources:6.0">test-database-user</user-name>
-						<password xmlns="urn:jboss:domain:datasources:6.0">DATABASE_PASSWORD_PLACEHOLDER</password>
+						<user-name xmlns="urn:jboss:domain:datasources:6.0">DATABASE_USERNAME</user-name>
+						<password xmlns="urn:jboss:domain:datasources:6.0">DATABASE_PASSWORD</password>
 					</security>
 					<timeout xmlns="urn:jboss:domain:datasources:6.0">
 						<idle-timeout-minutes xmlns="urn:jboss:domain:datasources:6.0">5</idle-timeout-minutes>
